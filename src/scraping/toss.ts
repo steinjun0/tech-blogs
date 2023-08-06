@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { IPost } from "./scraping";
 
-export async function tossScrap(): Promise<IPost[]> {
+export async function scrap(): Promise<IPost[]> {
   const url = 'https://toss.tech/';
   const response = await fetch(url);
   const html = await response.text();
@@ -44,3 +44,5 @@ export async function tossScrap(): Promise<IPost[]> {
   }
   return posts;
 }
+
+export default { getPosts: scrap };

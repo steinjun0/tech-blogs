@@ -5,7 +5,7 @@ import { DomHandler } from "domhandler";
 import { TCompnaies, companies } from '@/interface/post';
 import { getPosts, postPosts } from '@/app/api/post/route';
 import { convertDateToMysqlDate } from '@/service/util';
-import { tossScrap } from './toss';
+import tossScrap from './toss';
 
 
 export async function updateAllSites() {
@@ -41,7 +41,7 @@ export async function updateAllSites() {
 export async function scrapSite(compnay: typeof companies[number]): Promise<IPost[]> {
   switch (compnay) {
     case 'toss':
-      const posts = await tossScrap();
+      const posts = await tossScrap.getPosts();
       return posts;
   }
 }
