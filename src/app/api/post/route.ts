@@ -3,7 +3,7 @@
 // connection.connect();
 
 import { TCompnaies } from "@/interface/post";
-import { IPost } from "@/app/api/scraping";
+import { IPost } from "@/scraping/scraping";
 import { convertDateToMysqlDate } from "@/service/util";
 
 async function getConnection() {

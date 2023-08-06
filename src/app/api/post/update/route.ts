@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { updateAllSites } from '../../scraping';
+import { updateAllSites } from '@/scraping/scraping';
 
 export async function GET() {
   const res = await updateAllSites();

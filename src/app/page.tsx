@@ -1,6 +1,3 @@
-import { updateAllSites, scrapLatest, tossScrap } from '@/app/api/scraping';
-import Image from 'next/image';
-import { useEffect } from 'react';
 import { getPosts } from '@/app/api/post/route';
 // tossScrap();
 // scrapLatest('toss').then((res) => {
