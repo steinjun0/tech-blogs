@@ -44,14 +44,14 @@ export async function getPosts(companies?: Partial<TCompnaies>): Promise<IPost[]
 //   return rows;
 // }
 
-// export async function postPosts(posts: IPost[]) {
-//   const connection = await getConnection();
-//   let query = 'INSERT INTO post (url, title, description, date, companyName) VALUES';
-//   posts.forEach((post, index) => {
-//     if (index !== 0) query += ',';
-//     query += `('${post.url}', '${post.title}', '${post.description}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
-//   });
-//   const res = await connection.execute(query);
-//   connection.end();
-//   return res;
-// }
+export async function postPosts(posts: IPost[]) {
+  const connection = await getConnection();
+  let query = 'INSERT INTO post (url, title, description, date, companyName) VALUES';
+  posts.forEach((post, index) => {
+    if (index !== 0) query += ',';
+    query += `('${post.url}', '${post.title}', '${post.description}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
+  });
+  const res = await connection.execute(query);
+  connection.end();
+  return res;
+}
