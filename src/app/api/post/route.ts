@@ -1,10 +1,20 @@
-
-
 // connection.connect();
 
 import { TCompnay } from "@/interface/post";
 import { IPost } from "@/scraping/scraping";
 import { convertDateToMysqlDate } from "@/service/util";
+import { NextResponse } from "next/server";
+
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  let companies = searchParams.getAll('company') as unknown;
+
+  const page = searchParams.get('page');
+  const res = await getPosts(page ? Number(page) : undefined, companies as TCompnay[] ?? undefined);
+
+  return NextResponse.json(res);
+}
 
 async function getConnection() {
   let mysql = require('mysql2/promise');
@@ -17,10 +27,10 @@ async function getConnection() {
   return connection;
 }
 
-export async function getPosts(companies?: TCompnay[]): Promise<IPost[]> {
+export async function getPosts(page?: number, companies?: TCompnay[],): Promise<{ posts: IPost[], isFinish: boolean; }> {
   const connection = await getConnection();
   let query = 'SELECT * FROM `post`';
-  if (companies) {
+  if (companies && companies.length > 0) {
     query += ' WHERE company IN (';
     companies.forEach((company, index) => {
       if (index !== 0) query += ', ';
@@ -30,9 +40,12 @@ export async function getPosts(companies?: TCompnay[]): Promise<IPost[]> {
     query += ')';
   }
   query += ' ORDER BY date DESC';
+  if (page) {
+    query += ` LIMIT ${page * 10}, 10`;
+  }
   const [rows, fields] = await connection.execute(query);
   connection.end();
-  return rows;
+  return { posts: rows, isFinish: rows.length < 10 };
 }
 
 // export async function getLatestPost(comp: TCompnaies[number]): Promise<IPost> {
