@@ -56,7 +56,7 @@ export interface IPost {
 
 
 export function createUpdatePostsQuery(posts: IPost[]) {
-  let query = 'INSERT INTO post (url, date, title, description, companyName) VALUES';
+  let query = 'INSERT INTO post (url, date, title, description, company) VALUES';
   posts.forEach((post) => {
     query += `('${post.url}', '${convertDateToMysqlDate(post.date)}', '${post.title}', '${post.description}', ${post.company}),`;
   });

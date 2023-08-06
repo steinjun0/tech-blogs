@@ -21,7 +21,7 @@ export async function getPosts(companies?: TCompnay[]): Promise<IPost[]> {
   const connection = await getConnection();
   let query = 'SELECT * FROM `post`';
   if (companies) {
-    query += ' WHERE companyName IN (';
+    query += ' WHERE company IN (';
     companies.forEach((company, index) => {
       if (index !== 0) query += ', ';
       query += `'${company}'`;
@@ -46,7 +46,7 @@ export async function getPosts(companies?: TCompnay[]): Promise<IPost[]> {
 
 export async function postPosts(posts: IPost[]) {
   const connection = await getConnection();
-  let query = 'INSERT INTO post (url, title, description, date, companyName) VALUES';
+  let query = 'INSERT INTO post (url, title, description, date, company) VALUES';
   posts.forEach((post, index) => {
     if (index !== 0) query += ',';
     query += `('${post.url}', '${post.title}', '${post.description}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
