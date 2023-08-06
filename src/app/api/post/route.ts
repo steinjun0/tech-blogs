@@ -2,7 +2,7 @@
 
 // connection.connect();
 
-import { TCompnaies } from "@/interface/post";
+import { TCompnay } from "@/interface/post";
 import { IPost } from "@/scraping/scraping";
 import { convertDateToMysqlDate } from "@/service/util";
 
@@ -17,7 +17,7 @@ async function getConnection() {
   return connection;
 }
 
-export async function getPosts(companies?: Partial<TCompnaies>): Promise<IPost[]> {
+export async function getPosts(companies?: TCompnay[]): Promise<IPost[]> {
   const connection = await getConnection();
   let query = 'SELECT * FROM `post`';
   if (companies) {

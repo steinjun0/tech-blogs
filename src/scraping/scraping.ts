@@ -1,11 +1,8 @@
-import * as cheerio from 'cheerio';
-const { Parser } = require("htmlparser2");
-import * as htmlparser2 from "htmlparser2";
-import { DomHandler } from "domhandler";
-import { TCompnaies, companies } from '@/interface/post';
+import { TCompnay, companies } from '@/interface/post';
 import { getPosts, postPosts } from '@/app/api/post/route';
 import { convertDateToMysqlDate } from '@/service/util';
 import tossScrap from './toss';
+import kakaoScrap from './kakao';
 
 
 export async function updateAllSites() {
@@ -24,7 +21,7 @@ export async function updateAllSites() {
           isFind = true;
           break;
         }
-        if (realPost.date.getTime() > dbPost.date.getTime()) {
+        if (realPost.date.getTime() > dbPost.date.getTime() + 1000 * 60 * 60 * 48) {
           break;
         }
       }
@@ -33,17 +30,20 @@ export async function updateAllSites() {
       }
     }
   }
+  console.log('missingPosts', missingPosts);
   if (missingPosts.length > 0) {
     postPosts(missingPosts);
   }
 }
 
-export async function scrapSite(compnay: typeof companies[number]): Promise<IPost[]> {
-  switch (compnay) {
-    case 'toss':
-      const posts = await tossScrap.getPosts();
-      return posts;
-  }
+export async function scrapSite(company: TCompnay): Promise<IPost[]> {
+  type TScrap = { getPosts: () => Promise<IPost[]>; };
+  const companyScraps: { [key in TCompnay]: TScrap } = {
+    'toss': tossScrap,
+    'kakao': kakaoScrap
+  };
+  const posts = await companyScraps[company].getPosts();
+  return posts;
 }
 
 export interface IPost {
@@ -51,7 +51,7 @@ export interface IPost {
   title: string,
   description: string,
   date: Date;
-  company: TCompnaies[number];
+  company: TCompnay;
 }
 
 
