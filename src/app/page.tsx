@@ -1,7 +1,7 @@
-import { scrapLatest, tossScrap, updatePosts } from '@/api/scraping';
+import { updateAllSites, scrapLatest, tossScrap } from '@/app/api/scraping';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import { getPosts } from '@/api/post';
+import { getPosts } from '@/app/api/post/route';
 // tossScrap();
 // scrapLatest('toss').then((res) => {
 //   console.log(res);
@@ -15,6 +15,7 @@ import { getPosts } from '@/api/post';
 //   return posts;
 // }
 
+// updateAllSites();
 export default async function Home() {
   const posts = await getPosts();
   return (
