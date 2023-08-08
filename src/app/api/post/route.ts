@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   let companies = searchParams.getAll('company') as unknown;
 
   const page = searchParams.get('page');
-  const res = await getPosts(page ? Number(page) : undefined, companies as TCompnay[] ?? undefined);
+  const res = await getPosts({page:page ? Number(page) : undefined, companies:companies as TCompnay[] ?? undefined});
 
   return NextResponse.json(res);
 }
@@ -27,7 +27,7 @@ async function getConnection() {
   return connection;
 }
 
-export async function getPosts(page?: number, companies?: TCompnay[],): Promise<{ posts: IPost[], isFinish: boolean; }> {
+export async function getPosts({page=undefined,companies=[]}:{page?: number, companies?: TCompnay[]}): Promise<{ posts: IPost[], isFinish: boolean; }> {
   const connection = await getConnection();
   let query = 'SELECT * FROM `post`';
   if (companies && companies.length > 0) {
@@ -62,7 +62,7 @@ export async function postPosts(posts: IPost[]) {
   let query = 'INSERT INTO post (url, title, description, date, company) VALUES';
   posts.forEach((post, index) => {
     if (index !== 0) query += ',';
-    query += `('${post.url}', '${post.title}', '${post.description}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
+    query += `('${post.url}', '${post.title.replaceAll("'","\\'")}', '${post.description.replaceAll("'","\\'")}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
   });
   const res = await connection.execute(query);
   connection.end();

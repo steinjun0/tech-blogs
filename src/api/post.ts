@@ -1,8 +1,7 @@
 import { TCompnay } from "@/interface/post";
 import { IPost } from "@/scraping/scraping";
-import { QueryFunctionContext } from "@tanstack/react-query";
 
-export async function getPosts({ pageParam = { page: 1, companies: undefined } }): Promise<{ posts: IPost[], isFinish: boolean; }> {
+export async function getPosts({ pageParam = { page: 1, companies: [] } }): Promise<{ posts: IPost[], isFinish: boolean; }> {
   return fetch(`/api/post?page=` + pageParam.page + (pageParam.companies ? pageParam.companies.map((company: TCompnay) => `&company=${company}`).join('') : ''))
     .then((res) => res.json())
     .then((res) => {

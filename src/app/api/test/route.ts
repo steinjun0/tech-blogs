@@ -1,9 +1,15 @@
+import naver from '@/scraping/naver';
 import { NextResponse } from 'next/server';
-import { updateAllSites } from '@/scraping/scraping';
-import kakaoScrp from '@/scraping/kakao';
+
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
 export async function GET() {
-  const res = await kakaoScrp.totalScrap();
+  const res = await naver.getPosts();
+  // const res = await kakao.getPosts();
+  // postPosts(res)
+  // const res = await updateAllSites()
+  // const res = await updateSiteTotalPost({company:'naver'})
 
   return NextResponse.json({ res });
 }

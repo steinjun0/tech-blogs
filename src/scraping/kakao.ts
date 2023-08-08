@@ -86,4 +86,4 @@ export async function totalScrap(): Promise<IPost[]> {
 }
 
 
-export default { getPosts: scrap, totalScrap };
+export default { getPosts: scrap, getTotalPosts:totalScrap };

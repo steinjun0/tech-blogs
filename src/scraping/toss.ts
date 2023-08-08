@@ -45,4 +45,4 @@ export async function scrap(): Promise<IPost[]> {
   return posts;
 }
 
-export default { getPosts: scrap };
+export default { getPosts: scrap,getTotalPosts:scrap };

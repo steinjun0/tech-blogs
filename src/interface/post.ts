@@ -1,2 +1,2 @@
-export type TCompnay = 'toss' | 'kakao';
-export const companies: TCompnay[] = ['toss', 'kakao'];
+export type TCompnay = 'toss' | 'kakao' | 'naver';
+export const companies: TCompnay[] = ['toss', 'kakao', 'naver'];
