@@ -1,5 +1,5 @@
 import { getPosts, postPosts } from '@/app/api/post/route';
-import { TCompnay, companies } from '@/interface/post';
+import { TCompany, companies } from '@/interface/post';
 import { convertDateToMysqlDate } from '@/service/util';
 import kakaoScrap from './kakao';
 import naverScrap from './naver';
@@ -38,7 +38,7 @@ export async function updateAllSites() {
   missingPosts.length = 0
 }
 
-export async function updateSiteTotalPost({company}:{company:TCompnay}) {
+export async function updateSiteTotalPost({company}:{company:TCompany}) {
   const missingPosts: IPost[] = [];
   const dbPosts = (await getPosts({companies:[company]}));
   const realPosts = (await scrapSiteTotal(company)).sort((a, b) => b.date.getTime() - a.date.getTime());
@@ -67,9 +67,9 @@ export async function updateSiteTotalPost({company}:{company:TCompnay}) {
   realPosts.length = 0
 }
 
-export async function scrapSite(company: TCompnay): Promise<IPost[]> {
+export async function scrapSite(company: TCompany): Promise<IPost[]> {
   type TScrap = { getPosts: (param?:any) => Promise<IPost[]>; };
-  const companyScraps: { [key in TCompnay]: TScrap } = {
+  const companyScraps: { [key in TCompany]: TScrap } = {
     'toss': tossScrap,
     'kakao': kakaoScrap,
     'naver': naverScrap,
@@ -78,9 +78,9 @@ export async function scrapSite(company: TCompnay): Promise<IPost[]> {
   return posts;
 }
 
-export async function scrapSiteTotal(company: TCompnay): Promise<IPost[]> {
+export async function scrapSiteTotal(company: TCompany): Promise<IPost[]> {
   type TScrap = { getPosts: (param?:any) => Promise<IPost[]>, getTotalPosts: (param?:any) => Promise<IPost[]>};
-  const companyScraps: { [key in TCompnay]: TScrap } = {
+  const companyScraps: { [key in TCompany]: TScrap } = {
     'toss': tossScrap,
     'kakao': kakaoScrap,
     'naver': naverScrap,
@@ -94,7 +94,7 @@ export interface IPost {
   title: string,
   description: string,
   date: Date;
-  company: TCompnay;
+  company: TCompany;
 }
 
 

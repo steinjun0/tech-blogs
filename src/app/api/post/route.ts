@@ -1,6 +1,6 @@
 // connection.connect();
 
-import { TCompnay } from "@/interface/post";
+import { TCompany } from "@/interface/post";
 import { IPost } from "@/scraping/scraping";
 import { convertDateToMysqlDate } from "@/service/util";
 import { NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   let companies = searchParams.getAll('company') as unknown;
 
   const page = searchParams.get('page');
-  const res = await getPosts({page:page ? Number(page) : undefined, companies:companies as TCompnay[] ?? undefined});
+  const res = await getPosts({page:page ? Number(page) : undefined, companies:companies as TCompany[] ?? undefined});
 
   return NextResponse.json(res);
 }
@@ -27,7 +27,7 @@ async function getConnection() {
   return connection;
 }
 
-export async function getPosts({page=undefined,companies=[]}:{page?: number, companies?: TCompnay[]}): Promise<{ posts: IPost[], isFinish: boolean; }> {
+export async function getPosts({page=undefined,companies=[]}:{page?: number, companies?: TCompany[]}): Promise<{ posts: IPost[], isFinish: boolean; }> {
   const connection = await getConnection();
   let query = 'SELECT * FROM `post`';
   if (companies && companies.length > 0) {

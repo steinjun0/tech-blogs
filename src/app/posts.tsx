@@ -1,14 +1,14 @@
 'use client';
 
 import { getPosts } from '@/api/post';
-import { TCompnay } from '@/interface/post';
+import { TCompany } from '@/interface/post';
 import { IPost } from '@/scraping/scraping';
 import { printDate } from '@/service/util';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { PropsWithChildren, useCallback } from 'react';
 
-function Logo({company}: {company: TCompnay}){
+function Logo({company}: {company: TCompany}){
   return <Image src={`/logo/${company}.png`} width='24' height='24' alt={company} />
 }
 
