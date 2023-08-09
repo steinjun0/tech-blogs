@@ -13,7 +13,7 @@ export default async function Home() {
         {/* <Image src='/logo/stein.svg' width='24' height='24' alt='stein' /> */}
       </nav>
       <div className='mt-24'>
-        <Posts initialData={{ page: 1, ...initialData }} />
+        <Posts initialData={initialData} />
       </div>
     </main>
   );

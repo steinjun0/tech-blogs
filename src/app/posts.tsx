@@ -12,7 +12,7 @@ function Logo({ company }: { company: TCompany; }) {
   return <Image src={`/logo/${company}.png`} width='24' height='24' alt={company} />;
 }
 
-export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[], page: number, isFinish: boolean; }; }) {
+export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[], isFinish: boolean; }; }) {
   const {
     data,
     error,
