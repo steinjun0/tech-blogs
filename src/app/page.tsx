@@ -1,13 +1,10 @@
-import { IPost } from '@/scraping/scraping';
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Posts } from './posts';
 import { getPosts } from './api/post/route';
+import { Posts } from './posts';
 
 
 export default async function Home() {
 
-  const initialData = await getPosts(1);
+  const initialData = await getPosts({ page: 1 });
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
