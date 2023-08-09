@@ -8,8 +8,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { PropsWithChildren, useCallback } from 'react';
 
-function Logo({company}: {company: TCompany}){
-  return <Image src={`/logo/${company}.png`} width='24' height='24' alt={company} />
+function Logo({ company }: { company: TCompany; }) {
+  return <Image src={`/logo/${company}.png`} width='24' height='24' alt={company} />;
 }
 
 export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[], page: number, isFinish: boolean; }; }) {
@@ -30,6 +30,15 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
       }
       return { ...lastPage, page: pages.length + 1 };
     },
+    initialData: () => {
+      const data = props.initialData;
+      if (data) {
+        return {
+          pageParams: [undefined],
+          pages: [data]
+        };
+      }
+    },
   });
 
   const observerRef = useCallback((node: HTMLDivElement) => {
@@ -49,7 +58,7 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
         data!.pages.map((pageData, i) => (
           pageData.posts.map((post: IPost, index: number) => (
             <a key={index} className='flex flex-col gap-2 border-b pb-4 hover:underline cursor-pointer' href={post.url} >
-              <div className='flex justify-between text-gray-500 text-xs'>
+              <div className='flex justify-between text-gray-500 text-xs no-underline'>
                 <div className='flex items-center gap-2'>
                   <Logo company={post.company} />
                   <span className=''>{post.company}</span>
@@ -66,7 +75,6 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
                     overflow: 'hidden'
                   }}
               >{post.description}</p>
-
             </a>
           ))
         ))
