@@ -1,19 +1,18 @@
 'use client';
 
 import { getPosts } from '@/api/post';
+import { TCompnay } from '@/interface/post';
 import { IPost } from '@/scraping/scraping';
 import { printDate } from '@/service/util';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { PropsWithChildren, ReactNode, useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import { PropsWithChildren, useCallback } from 'react';
+
+function Logo({company}: {company: TCompnay}){
+  return <Image src={`/logo/${company}.png`} width='24' height='24' alt={company} />
+}
 
 export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[], page: number, isFinish: boolean; }; }) {
-  const [page, setPage] = useState(props.initialData.page + 1);
-  const fetchProjects = async ({ pageParam = 0 }) => {
-    const res = await fetch('/api/projects?cursor=' + pageParam);
-    return res.json();
-  };
-
-
   const {
     data,
     error,
@@ -49,9 +48,12 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
       {
         data!.pages.map((pageData, i) => (
           pageData.posts.map((post: IPost, index: number) => (
-            <div key={index} className='flex flex-col gap-2 border-b pb-4'>
+            <a key={index} className='flex flex-col gap-2 border-b pb-4 hover:underline cursor-pointer' href={post.url} >
               <div className='flex justify-between text-gray-500 text-xs'>
-                <span className=''>{post.company}</span>
+                <div className='flex items-center gap-2'>
+                  <Logo company={post.company} />
+                  <span className=''>{post.company}</span>
+                </div>
                 <span className=''>{printDate(post.date)}</span>
               </div>
               <h1 className='font-semibold text-lg'>{post.title}</h1>
@@ -65,7 +67,7 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
                   }}
               >{post.description}</p>
 
-            </div>
+            </a>
           ))
         ))
       }
