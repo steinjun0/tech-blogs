@@ -24,17 +24,18 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
   } = useInfiniteQuery({
     queryKey: ['posts'],
     queryFn: getPosts,
+    staleTime: 1000 * 60,
     getNextPageParam: (lastPage, pages) => {
       if (lastPage.isFinish) {
         return undefined;
       }
-      return { ...lastPage, page: pages.length + 1 };
+      return { ...lastPage, page: pages.length };
     },
     initialData: () => {
       const data = props.initialData;
       if (data) {
         return {
-          pageParams: [undefined],
+          pageParams: [{ page: 0 }],
           pages: [data]
         };
       }
@@ -57,7 +58,8 @@ export function Posts(props: PropsWithChildren & { initialData: { posts: IPost[]
       {
         data!.pages.map((pageData, i) => (
           pageData.posts.map((post: IPost, index: number) => (
-            <a key={index} className='flex flex-col gap-2 border-b pb-4 hover:underline cursor-pointer' href={post.url} >
+            // new tab
+            <a key={index} className='flex flex-col gap-2 border-b pb-4 hover:underline cursor-pointer' href={post.url} target="_blank" >
               <div className='flex justify-between text-gray-500 text-xs no-underline'>
                 <div className='flex items-center gap-2'>
                   <Logo company={post.company} />
