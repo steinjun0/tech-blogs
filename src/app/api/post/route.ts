@@ -61,10 +61,12 @@ export async function getPosts({ page = undefined, companies = [] }: { page?: nu
 export async function postPosts(posts: IPost[]) {
   const connection = await getConnection();
   let query = 'INSERT INTO post (url, title, description, date, company) VALUES';
+  console.log('posts', posts);
   posts.forEach((post, index) => {
     if (index !== 0) query += ',';
     query += `('${post.url}', '${post.title.replaceAll("'", "\\'")}', '${post.description.replaceAll("'", "\\'")}', '${convertDateToMysqlDate(post.date)}', '${post.company}')`;
   });
+  console.log('query', query);
   const res = await connection.execute(query);
   connection.end();
   return res;
